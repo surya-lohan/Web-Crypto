@@ -4,8 +4,9 @@ import WalletInfo from './WalletInfo';
 import SendETH from './SendETH';
 import TokenManager from './TokenManager';
 import TransactionHistory from './TransactionHistory';
+import RevealSecrets from './RevealSecrets';
 
-type Tab = 'send' | 'tokens' | 'history';
+type Tab = 'send' | 'tokens' | 'history' | 'settings';
 
 export default function Dashboard() {
     const { lockWallet, walletType } = useWallet();
@@ -46,6 +47,15 @@ export default function Dashboard() {
                     >
                         History
                     </button>
+                    <button
+                        onClick={() => setActiveTab('settings')}
+                        className={`px-3 sm:px-4 py-3 text-sm sm:text-base font-medium border-b-2 transition-colors ${activeTab === 'settings'
+                            ? 'border-primary-600 text-primary-600 dark:text-primary-400'
+                            : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                            }`}
+                    >
+                        Settings
+                    </button>
                 </div>
 
                 {/* Tab Content */}
@@ -53,6 +63,7 @@ export default function Dashboard() {
                     {activeTab === 'send' && <SendETH />}
                     {activeTab === 'tokens' && <TokenManager />}
                     {activeTab === 'history' && <TransactionHistory />}
+                    {activeTab === 'settings' && <RevealSecrets />}
                 </div>
             </div>
 
