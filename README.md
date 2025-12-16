@@ -10,10 +10,6 @@ A **production-grade**, fully-functional Web3 crypto wallet built with React, Ty
 ![ethers.js](https://img.shields.io/badge/ethers.js-6.9-blue)
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-Latest-blueviolet)
 
-## ⚠️ Important Disclaimer
-
-**This wallet is for educational and testing purposes only.** Never use this wallet with real funds on Ethereum mainnet without a comprehensive professional security audit. Always test on testnets like Sepolia.
-
 ---
 
 ## ✨ Features

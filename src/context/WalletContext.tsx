@@ -9,7 +9,7 @@ export type WalletType = 'internal' | 'metamask' | 'walletconnect';
 interface WalletState {
   address: string | null;
   balance: bigint | null;
-  wallet: ethers.Wallet | null;
+  wallet: ethers.HDNodeWallet | ethers.Wallet | null;
   isLocked: boolean;
   walletType: WalletType | null;
   isLoading: boolean;
@@ -24,14 +24,14 @@ interface WalletContextType extends WalletState {
   lockWallet: () => void;
   deleteStoredWallet: () => Promise<void>;
   hasStoredWallet: () => Promise<boolean>;
-  
+
   // External wallets
   connectMetaMask: () => Promise<void>;
   disconnectWallet: () => void;
-  
+
   // Balance
   refreshBalance: () => Promise<void>;
-  
+
   // Transactions
   sendTransaction: (to: string, amount: string) => Promise<string>;
 }
@@ -67,14 +67,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   /**
    * Create a new wallet with a fresh mnemonic
    */
-  const createWallet = useCallback(async (password: string, wordCount: 12 | 24 = 12): Promise<string> => {
+  const createWallet = useCallback(async (password: string, _wordCount: 12 | 24 = 12): Promise<string> => {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
-      
+
       // Generate new wallet
       const wallet = ethers.Wallet.createRandom();
       const mnemonic = wallet.mnemonic?.phrase;
-      
+
       if (!mnemonic) {
         throw new Error('Failed to generate mnemonic');
       }
@@ -111,7 +111,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const importWalletFromMnemonic = useCallback(async (mnemonic: string, password: string): Promise<void> => {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
-      
+
       // Validate and create wallet from mnemonic
       const wallet = ethers.Wallet.fromPhrase(mnemonic.trim());
 
@@ -144,7 +144,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const importWalletFromPrivateKey = useCallback(async (privateKey: string, password: string): Promise<void> => {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
-      
+
       // Create wallet from private key
       const wallet = new ethers.Wallet(privateKey.trim());
 
@@ -178,7 +178,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const unlockWallet = useCallback(async (password: string): Promise<void> => {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
-      
+
       // Load encrypted data
       const encryptedData = await loadEncryptedWallet();
       if (!encryptedData) {
@@ -258,8 +258,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       }
 
       // Request account access
-      const accounts = await window.ethereum.request({ 
-        method: 'eth_requestAccounts' 
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts'
       }) as string[];
 
       if (accounts.length === 0) {

@@ -138,7 +138,7 @@ export default function SendETH() {
                 />
             </div>
 
-            {estimatedGas && (
+            {estimatedGas !== null && estimatedGas > 0n && (
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
                     <p className="text-sm text-blue-800 dark:text-blue-200">
                         Estimated Gas: {formatEth(estimatedGas)} ETH

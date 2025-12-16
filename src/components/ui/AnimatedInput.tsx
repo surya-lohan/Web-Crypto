@@ -29,7 +29,7 @@ export default function AnimatedInput({ label, icon, error, className = '', ...p
                     </div>
                 )}
 
-                <motion.input
+                <input
                     {...props}
                     onFocus={(e) => {
                         setIsFocused(true);
@@ -55,7 +55,6 @@ export default function AnimatedInput({ label, icon, error, className = '', ...p
             placeholder-gray-400 dark:placeholder-gray-500
             ${className}
           `}
-                    whileFocus={{ scale: 1.01 }}
                 />
 
                 {/* Animated underline effect */}

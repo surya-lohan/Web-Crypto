@@ -10,21 +10,8 @@ import Dashboard from './Dashboard';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function MainLayout() {
-    const { isLocked, walletType, isLoading, hasStoredWallet } = useWallet();
+    const { isLocked, walletType, isLoading } = useWallet();
     const { theme, toggleTheme } = useTheme();
-    const [hasWallet, setHasWallet] = useState<boolean | null>(null);
-
-    useEffect(() => {
-        // Check if wallet exists in storage
-        const checkWallet = async () => {
-            const exists = await hasStoredWallet();
-            setHasWallet(exists);
-        };
-
-        if (!isLoading) {
-            checkWallet();
-        }
-    }, [isLocked, walletType, isLoading, hasStoredWallet]);
 
     if (isLoading) {
         return (
@@ -72,18 +59,10 @@ export default function MainLayout() {
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Security Disclaimer */}
-                <div className="mb-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                        ⚠️ <strong>Educational Purpose Only:</strong> This wallet is for learning and testing on testnets.
-                        Never use it with real funds on mainnet without a professional security audit.
-                    </p>
-                </div>
-
                 {/* Route based on wallet state */}
                 {!isLocked && (walletType === 'internal' || walletType === 'metamask' || walletType === 'walletconnect') ? (
                     <Dashboard />
-                ) : isLocked && hasWallet === true ? (
+                ) : isLocked ? (
                     <UnlockScreen />
                 ) : (
                     <WelcomeScreen />

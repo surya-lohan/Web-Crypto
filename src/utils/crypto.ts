@@ -6,9 +6,6 @@
  * - AES-GCM for encryption
  * - Random salt and IV for each encryption
  * - Never logs sensitive data
- * 
- * ⚠️ SECURITY WARNING: This is for educational purposes only.
- * For production use, conduct a thorough security audit.
  */
 
 export interface EncryptedData {
@@ -132,8 +129,8 @@ export async function encryptMnemonic(
     // Return encrypted data with metadata
     return {
       ciphertext: arrayBufferToBase64(ciphertext),
-      salt: arrayBufferToBase64(salt),
-      iv: arrayBufferToBase64(iv),
+      salt: arrayBufferToBase64(salt.buffer as ArrayBuffer),
+      iv: arrayBufferToBase64(iv.buffer as ArrayBuffer),
     };
   } catch (error) {
     console.error('Encryption error:', error);
